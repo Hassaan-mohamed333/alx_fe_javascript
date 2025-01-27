@@ -1,6 +1,5 @@
- 
 document.addEventListener('DOMContentLoaded', () => {
-    const quotes = [
+    const quotes = JSON.parse(localStorage.getItem('quotes')) || [
       { text: "The journey of a thousand miles begins with one step.", category: "Inspiration" },
       { text: "Life is what happens when you're busy making other plans.", category: "Life" },
       { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", category: "Success" },
@@ -12,7 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const newQuoteText = document.getElementById('newQuoteText');
     const newQuoteCategory = document.getElementById('newQuoteCategory');
   
-    // Function to display a random quote
+    function updateLocalStorage() {
+      const quotesJSON = JSON.stringify(quotes);
+      const storageObject = {};
+      storageObject.quotes = quotesJSON;
+      Object.keys(storageObject).forEach(key => {
+        localStorage[key] = storageObject[key]; // استخدام أسلوب غير مباشر لحفظ البيانات
+      });
+    }
+  
     function showRandomQuote() {
       if (quotes.length === 0) {
         quoteDisplay.textContent = "No quotes available. Add a new quote!";
@@ -23,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
       quoteDisplay.textContent = `"${randomQuote.text}" - Category: ${randomQuote.category}`;
     }
   
-    // Function to add a new quote
     function addQuote() {
       const quoteText = newQuoteText.value.trim();
       const quoteCategory = newQuoteCategory.value.trim();
@@ -34,16 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   
       quotes.push({ text: quoteText, category: quoteCategory });
+      updateLocalStorage();
   
-      // Clear the input fields
       newQuoteText.value = '';
       newQuoteCategory.value = '';
-  
       alert("New quote added successfully!");
     }
   
-    // Attach event listeners
     newQuoteButton.addEventListener('click', showRandomQuote);
     addQuoteButton.addEventListener('click', addQuote);
+  
+    // عرض اقتباس عشوائي عند تحميل الصفحة
+    showRandomQuote();
   });
   
