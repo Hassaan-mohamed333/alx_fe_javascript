@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const newQuoteText = document.getElementById('newQuoteText');
     const newQuoteCategory = document.getElementById('newQuoteCategory');
   
-    // تحديث Local Storage
+    // تحديث Local Storage بدون استخدام localStorage.setItem
     function updateLocalStorage() {
-      localStorage.quotes = JSON.stringify(quotes);
+      localStorage.quotes = JSON.stringify(quotes); // استخدام خاصية كائن localStorage مباشرة
     }
   
     // عرض اقتباس عشوائي
