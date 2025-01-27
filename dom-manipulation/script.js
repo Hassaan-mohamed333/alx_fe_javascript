@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const addQuoteButton = document.getElementById('addQuoteButton');
     const newQuoteText = document.getElementById('newQuoteText');
     const newQuoteCategory = document.getElementById('newQuoteCategory');
+    const exportButton = document.getElementById('exportQuotes');
+    const importInput = document.getElementById('importQuotes');
   
     // تحديث Local Storage
     function updateLocalStorage() {
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const randomIndex = Math.floor(Math.random() * quotes.length);
       const randomQuote = quotes[randomIndex];
       quoteDisplay.textContent = `"${randomQuote.text}" - Category: ${randomQuote.category}`;
+      sessionStorage.lastViewedQuote = JSON.stringify(randomQuote); // حفظ الاقتباس الأخير في Session Storage
     }
   
     // إضافة اقتباس جديد
@@ -48,10 +51,53 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("New quote added successfully!");
     }
   
+    // تصدير الاقتباسات إلى ملف JSON
+    function exportToJsonFile() {
+      const dataStr = JSON.stringify(quotes, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = "quotes.json";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  
+    // استيراد الاقتباسات من ملف JSON
+    function importFromJsonFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+  
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const importedQuotes = JSON.parse(e.target.result);
+          if (Array.isArray(importedQuotes)) {
+            quotes.push(...importedQuotes);
+            updateLocalStorage();
+            alert("Quotes imported successfully!");
+          } else {
+            alert("Invalid file format!");
+          }
+        } catch (error) {
+          alert("Error reading the file!");
+        }
+      };
+      reader.readAsText(file);
+    }
+  
     newQuoteButton.addEventListener('click', showRandomQuote);
     addQuoteButton.addEventListener('click', addQuote);
+    exportButton.addEventListener('click', exportToJsonFile);
+    importInput.addEventListener('change', importFromJsonFile);
   
-    // عرض اقتباس عشوائي عند تحميل الصفحة
-    showRandomQuote();
+    // عرض الاقتباس الأخير عند التحميل إذا كان موجودًا
+    if (sessionStorage.lastViewedQuote) {
+      const lastViewedQuote = JSON.parse(sessionStorage.lastViewedQuote);
+      quoteDisplay.textContent = `"${lastViewedQuote.text}" - Category: ${lastViewedQuote.category}`;
+    } else {
+      showRandomQuote();
+    }
   });
   
