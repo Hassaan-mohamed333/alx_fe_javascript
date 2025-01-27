@@ -8,6 +8,8 @@ let quotes = [
   // Reference to the DOM elements
   const quoteDisplay = document.getElementById("quoteDisplay");
   const newQuoteButton = document.getElementById("newQuote");
+  const exportQuotesBtn = document.getElementById("exportQuotesBtn");
+  const importFileInput = document.getElementById("importFile");
   
   // Function to load quotes from localStorage
   function loadQuotesFromStorage() {
@@ -79,23 +81,11 @@ let quotes = [
   
   // Event listeners
   newQuoteButton.addEventListener("click", showRandomQuote);
+  exportQuotesBtn.addEventListener("click", exportToJson);
   
   // Call the function to load quotes from localStorage when the page loads
   loadQuotesFromStorage();
   
-  // Adding the export and import buttons dynamically
-  document.addEventListener("DOMContentLoaded", () => {
-    // Export Button
-    const exportButton = document.createElement("button");
-    exportButton.innerText = "Export Quotes as JSON";
-    exportButton.addEventListener("click", exportToJson);
-    document.body.appendChild(exportButton);
-  
-    // Import Button
-    const importInput = document.createElement("input");
-    importInput.type = "file";
-    importInput.accept = ".json";
-    importInput.addEventListener("change", importFromJsonFile);
-    document.body.appendChild(importInput);
-  });
+  // Adding event listener to handle the import file input
+  importFileInput.addEventListener("change", importFromJsonFile);
   
