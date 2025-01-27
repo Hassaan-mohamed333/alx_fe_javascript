@@ -16,12 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportButton = document.getElementById('exportQuotes');
     const importInput = document.getElementById('importQuotes');
   
-    // حفظ الاقتباسات في Local Storage
+    // 1. حفظ الاقتباسات في Local Storage
     function saveToLocalStorage() {
       localStorage.quotes = JSON.stringify(quotes);
     }
   
-    // عرض اقتباس عشوائي
+    // 2. عرض اقتباس عشوائي
     function showRandomQuote() {
       if (quotes.length === 0) {
         quoteDisplay.textContent = "No quotes available. Add a new quote!";
@@ -30,10 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const randomIndex = Math.floor(Math.random() * quotes.length);
       const randomQuote = quotes[randomIndex];
       quoteDisplay.textContent = `"${randomQuote.text}" - Category: ${randomQuote.category}`;
-      sessionStorage.lastViewedQuote = JSON.stringify(randomQuote); // حفظ الاقتباس الأخير في Session Storage
+      sessionStorage.lastViewedQuote = JSON.stringify(randomQuote); // 3. حفظ الاقتباس الأخير في Session Storage
     }
   
-    // إضافة اقتباس جديد
+    // 4. إضافة اقتباس جديد
     function addQuote() {
       const quoteText = newQuoteText.value.trim();
       const quoteCategory = newQuoteCategory.value.trim();
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("New quote added successfully!");
     }
   
-    // تصدير الاقتباسات إلى ملف JSON
+    // 5. تصدير الاقتباسات إلى ملف JSON
     function exportToJsonFile() {
       const dataStr = JSON.stringify(quotes, null, 2);
       const blob = new Blob([dataStr], { type: "application/json" });
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.removeChild(link);
     }
   
-    // استيراد الاقتباسات من ملف JSON
+    // 6. استيراد الاقتباسات من ملف JSON
     function importFromJsonFile(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -87,12 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
       reader.readAsText(file);
     }
   
+    // إضافة المستمعين للأزرار
     newQuoteButton.addEventListener('click', showRandomQuote);
     addQuoteButton.addEventListener('click', addQuote);
     exportButton.addEventListener('click', exportToJsonFile);
     importInput.addEventListener('change', importFromJsonFile);
   
-    // عرض الاقتباس الأخير عند تحميل الصفحة إذا كان موجودًا
+    // عرض الاقتباس الأخير عند تحميل الصفحة
     if (sessionStorage.lastViewedQuote) {
       const lastViewedQuote = JSON.parse(sessionStorage.lastViewedQuote);
       quoteDisplay.textContent = `"${lastViewedQuote.text}" - Category: ${lastViewedQuote.category}`;
