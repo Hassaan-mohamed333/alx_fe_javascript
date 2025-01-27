@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // تحميل الاقتباسات من Local Storage أو استخدام بيانات افتراضية
-    const quotes = localStorage.quotes
+    const quotes = JSON.parse(localStorage.quotes || '[]').length > 0
       ? JSON.parse(localStorage.quotes)
       : [
           { text: "The journey of a thousand miles begins with one step.", category: "Inspiration" },
@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const newQuoteText = document.getElementById('newQuoteText');
     const newQuoteCategory = document.getElementById('newQuoteCategory');
   
-    // تحديث Local Storage
+    // تحديث Local Storage باستخدام خاصية الكائن مباشرة
     function updateLocalStorage() {
-      localStorage.quotes = JSON.stringify(quotes);
+      localStorage.quotes = JSON.stringify(quotes); // تعيين القيم بدون استخدام localStorage.setItem
     }
   
     // عرض اقتباس عشوائي
