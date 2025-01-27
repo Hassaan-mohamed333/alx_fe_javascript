@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // تحميل الاقتباسات من Local Storage أو استخدام بيانات افتراضية
+    // إعداد مصفوفة الاقتباسات الافتراضية
     const quotes = localStorage.quotes
       ? JSON.parse(localStorage.quotes)
       : [
@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportButton = document.getElementById('exportQuotes');
     const importInput = document.getElementById('importQuotes');
   
-    // تحديث Local Storage
-    function updateLocalStorage() {
+    // حفظ الاقتباسات في Local Storage
+    function saveToLocalStorage() {
       localStorage.quotes = JSON.stringify(quotes);
     }
   
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
   
       quotes.push({ text: quoteText, category: quoteCategory });
-      updateLocalStorage();
+      saveToLocalStorage();
   
       newQuoteText.value = '';
       newQuoteCategory.value = '';
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const importedQuotes = JSON.parse(e.target.result);
           if (Array.isArray(importedQuotes)) {
             quotes.push(...importedQuotes);
-            updateLocalStorage();
+            saveToLocalStorage();
             alert("Quotes imported successfully!");
           } else {
             alert("Invalid file format!");
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     exportButton.addEventListener('click', exportToJsonFile);
     importInput.addEventListener('change', importFromJsonFile);
   
-    // عرض الاقتباس الأخير عند التحميل إذا كان موجودًا
+    // عرض الاقتباس الأخير عند تحميل الصفحة إذا كان موجودًا
     if (sessionStorage.lastViewedQuote) {
       const lastViewedQuote = JSON.parse(sessionStorage.lastViewedQuote);
       quoteDisplay.textContent = `"${lastViewedQuote.text}" - Category: ${lastViewedQuote.category}`;
