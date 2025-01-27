@@ -40,6 +40,12 @@
     <button type="submit">Add Quote</button>
   </form>
 
+  <!-- Export Button Added Here -->
+  <button id="exportQuotesBtn">Export Quotes as JSON</button>
+
+  <!-- Import Button -->
+  <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+
   <script src="script.js"></script>
 </body>
 </html>
