@@ -8,9 +8,20 @@ const quotes = [
   // Reference to the DOM elements
   const quoteDisplay = document.getElementById("quoteDisplay");
   const newQuoteButton = document.getElementById("newQuote");
-  const addQuoteForm = document.getElementById("addQuoteForm");
-  const newQuoteText = document.getElementById("newQuoteText");
-  const newQuoteCategory = document.getElementById("newQuoteCategory");
+  
+  // Function to create the Add Quote form dynamically
+  function createAddQuoteForm() {
+    const formContainer = document.createElement("div");
+    formContainer.innerHTML = `
+      <input id="newQuoteText" type="text" placeholder="Enter a new quote" required />
+      <input id="newQuoteCategory" type="text" placeholder="Enter quote category" required />
+      <button type="submit">Add Quote</button>
+    `;
+    document.body.appendChild(formContainer); // Add the form to the body of the document
+  
+    // Re-attaching the event listener for form submission after form creation
+    formContainer.querySelector("button").addEventListener("click", addQuote);
+  }
   
   // Function to display a random quote
   function showRandomQuote() {
@@ -26,15 +37,15 @@ const quotes = [
   // Function to add a new quote
   function addQuote(event) {
     event.preventDefault(); // Prevent form submission
-    const quoteText = newQuoteText.value.trim();
-    const quoteCategory = newQuoteCategory.value.trim();
+    const quoteText = document.getElementById("newQuoteText").value.trim();
+    const quoteCategory = document.getElementById("newQuoteCategory").value.trim();
   
     if (quoteText && quoteCategory) {
       // Add new quote to the quotes array
       quotes.push({ text: quoteText, category: quoteCategory });
       // Clear input fields
-      newQuoteText.value = "";
-      newQuoteCategory.value = "";
+      document.getElementById("newQuoteText").value = "";
+      document.getElementById("newQuoteCategory").value = "";
       alert("Quote added successfully!");
     } else {
       alert("Please fill in both fields!");
@@ -43,5 +54,7 @@ const quotes = [
   
   // Event listeners
   newQuoteButton.addEventListener("click", showRandomQuote);
-  addQuoteForm.addEventListener("submit", addQuote);
+  
+  // Call the function to create the form dynamically
+  createAddQuoteForm();
   
