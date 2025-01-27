@@ -38,6 +38,17 @@ let quotes = [
     addQuoteBtn.addEventListener("click", addQuote);
   }
   
+  // Function to show a random quote
+  function showRandomQuote() {
+    if (quotes.length === 0) {
+      quoteDisplay.innerText = "No quotes available. Add a new quote!";
+      return;
+    }
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const selectedQuote = quotes[randomIndex];
+    quoteDisplay.innerHTML = `<p>"${selectedQuote.text}"</p><p><em>- ${selectedQuote.category}</em></p>`;
+  }
+  
   // Function to populate the categories dropdown
   function populateCategories() {
     const categories = new Set(quotes.map(quote => quote.category));
@@ -116,5 +127,4 @@ let quotes = [
   
   // Create the form dynamically
   createAddQuoteForm();
-
   
