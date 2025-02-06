@@ -1,51 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Quote Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    #quoteDisplay {
-      margin: 20px;
-      padding: 20px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-    }
-    form {
-      margin-top: 20px;
-    }
-    input {
-      margin: 5px;
-      padding: 8px;
-    }
-    button {
-      padding: 10px 15px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد الاقتباسات الديناميكي</title>
 </head>
 <body>
-  <h1>Dynamic Quote Generator</h1>
-  <div id="quoteDisplay">Click "Show New Quote" to display a quote.</div>
-  <button id="newQuote">Show New Quote</button>
-  
-  <form id="addQuoteForm">
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" required />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" required />
-    <button type="submit">Add Quote</button>
-  </form>
+    <h1>مولد الاقتباسات الديناميكي</h1>
 
-  <!-- Export Button Added Here -->
-  <button id="exportQuotesBtn">Export Quotes as JSON</button>
+    <div id="quoteDisplay"></div>
+    <button id="newQuote">عرض اقتباس جديد</button>
 
-  <!-- Import Button -->
-  <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+    <div>
+        <input id="newQuoteText" type="text" placeholder="أدخل اقتباسًا جديدًا">
+        <input id="newQuoteCategory" type="text" placeholder="أدخل تصنيف الاقتباس">
+        <button id="addQuote">إضافة اقتباس</button>
+    </div>
 
-  <script src="script.js"></script>
+    <div>
+        <button id="exportJson">تصدير الاقتباسات</button>
+        <input type="file" id="importFile" accept=".json">
+        <button id="importJson">استيراد الاقتباسات</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
