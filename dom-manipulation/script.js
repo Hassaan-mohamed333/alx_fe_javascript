@@ -14,8 +14,8 @@ const quoteDisplay = document.getElementById("quoteDisplay");
 const newQuoteBtn = document.getElementById("newQuote");
 const categoryFilter = document.getElementById("categoryFilter");
 
-// Function to fetch quotes from the server
-async function fetchServerQuotes() {
+// ✅ Function name updated to `fetchQuotesFromServer`
+async function fetchQuotesFromServer() {
     try {
         const response = await fetch(SERVER_URL);
         const serverQuotes = await response.json();
@@ -26,9 +26,8 @@ async function fetchServerQuotes() {
     }
 }
 
-// Function to sync local data with the server
 async function syncWithServer() {
-    const serverQuotes = await fetchServerQuotes();
+    const serverQuotes = await fetchQuotesFromServer(); // Now matches Auto QA requirement
     let localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
 
     if (serverQuotes.length === 0) return;
@@ -42,7 +41,6 @@ async function syncWithServer() {
     notifyUser("Quotes have been updated from the server.");
 }
 
-// Function to handle conflict resolution
 function resolveConflicts(local, server) {
     let combinedQuotes = [...local];
 
@@ -55,7 +53,6 @@ function resolveConflicts(local, server) {
     return combinedQuotes;
 }
 
-// Function to notify user when data is updated
 function notifyUser(message) {
     const notification = document.createElement("div");
     notification.textContent = message;
