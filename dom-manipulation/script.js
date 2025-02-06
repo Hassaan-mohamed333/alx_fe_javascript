@@ -1,4 +1,4 @@
-const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; // Mock API
+const SERVER_URL = "https://jsonplaceholder.typicode.com/posts"; 
 let quotes = JSON.parse(localStorage.getItem("quotes")) || [];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
     populateCategories();
     loadLastSelectedCategory();
     loadLastViewedQuote();
-    syncWithServer();
-    setInterval(syncWithServer, 30000); // Auto-sync every 30 seconds
+    syncQuotes();
+    setInterval(syncQuotes, 30000);
 });
 
 const quoteDisplay = document.getElementById("quoteDisplay");
@@ -18,32 +18,23 @@ async function fetchQuotesFromServer() {
     try {
         const response = await fetch(SERVER_URL);
         const serverQuotes = await response.json();
-        return serverQuotes.slice(0, 5).map(q => ({ text: q.title, category: "Server" })); // Mock category
+        return serverQuotes.slice(0, 5).map(q => ({ text: q.title, category: "Server" }));
     } catch (error) {
-        console.error("Failed to fetch quotes from server:", error);
         return [];
     }
 }
 
-// ✅ Function to post a new quote to the server
 async function postQuoteToServer(quote) {
     try {
-        const response = await fetch(SERVER_URL, {
+        await fetch(SERVER_URL, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(quote),
         });
-
-        const result = await response.json();
-        console.log("Quote successfully posted to server:", result);
-    } catch (error) {
-        console.error("Failed to post quote to server:", error);
-    }
+    } catch (error) {}
 }
 
-async function syncWithServer() {
+async function syncQuotes() {
     const serverQuotes = await fetchQuotesFromServer();
     let localQuotes = JSON.parse(localStorage.getItem("quotes")) || [];
 
@@ -54,19 +45,16 @@ async function syncWithServer() {
     quotes = mergedQuotes;
     populateCategories();
     showRandomQuote();
-
     notifyUser("Quotes have been updated from the server.");
 }
 
 function resolveConflicts(local, server) {
     let combinedQuotes = [...local];
-
     server.forEach(serverQuote => {
         if (!local.some(localQuote => localQuote.text === serverQuote.text)) {
             combinedQuotes.push(serverQuote);
         }
     });
-
     return combinedQuotes;
 }
 
@@ -80,7 +68,6 @@ function notifyUser(message) {
     notification.style.padding = "10px";
     notification.style.borderRadius = "5px";
     document.body.appendChild(notification);
-
     setTimeout(() => document.body.removeChild(notification), 5000);
 }
 
@@ -110,7 +97,6 @@ function showRandomQuote() {
     sessionStorage.setItem("lastQuote", JSON.stringify(quote));
 }
 
-// ✅ Updated addQuote() to also post the quote to the server
 function addQuote() {
     const quoteText = document.getElementById("newQuoteText").value.trim();
     const quoteCategory = document.getElementById("newQuoteCategory").value.trim();
@@ -125,10 +111,7 @@ function addQuote() {
     saveQuotes();
     populateCategories();
     showRandomQuote();
-
-    // ✅ Send the quote to the server
     postQuoteToServer(newQuote);
-
     document.getElementById("newQuoteText").value = "";
     document.getElementById("newQuoteCategory").value = "";
 }
