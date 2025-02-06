@@ -45,7 +45,8 @@ async function syncQuotes() {
     quotes = mergedQuotes;
     populateCategories();
     showRandomQuote();
-    notifyUser("Quotes have been updated from the server.");
+
+    notifyUser("Quotes synced with server!"); // ✅ مطلوب للاختبار
 }
 
 function resolveConflicts(local, server) {
@@ -59,16 +60,26 @@ function resolveConflicts(local, server) {
 }
 
 function notifyUser(message) {
-    const notification = document.createElement("div");
+    let notification = document.getElementById("notification");
+    if (!notification) {
+        notification = document.createElement("div");
+        notification.id = "notification";
+        notification.style.position = "fixed";
+        notification.style.bottom = "20px";
+        notification.style.right = "20px";
+        notification.style.backgroundColor = "lightgreen";
+        notification.style.padding = "10px";
+        notification.style.borderRadius = "5px";
+        notification.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.2)";
+        document.body.appendChild(notification);
+    }
+
     notification.textContent = message;
-    notification.style.position = "fixed";
-    notification.style.bottom = "20px";
-    notification.style.right = "20px";
-    notification.style.backgroundColor = "lightblue";
-    notification.style.padding = "10px";
-    notification.style.borderRadius = "5px";
-    document.body.appendChild(notification);
-    setTimeout(() => document.body.removeChild(notification), 5000);
+    notification.style.display = "block";
+
+    setTimeout(() => {
+        notification.style.display = "none";
+    }, 5000);
 }
 
 function saveQuotes() {
